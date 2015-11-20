@@ -19,11 +19,13 @@ module.exports = function(grunt) {
       grunt.warn('The option "versionFile" is required.');
       return;
     }
-    var baseDir = this.data.baseDir || path.dirname(versionFile);
-    ver(this.data.phases, versionFile, baseDir, this.data.forceVersion);
+    var baseDirFrom = this.data.baseDirFrom || path.dirname(versionFile);
+    var baseDirTo = this.data.baseDirTo || path.dirname(versionFile);
+
+    ver(this.data.phases, versionFile, baseDirFrom, baseDirTo, this.data.forceVersion);
   });
 
-  ver = function(phases, versionFilePath, baseDir, forceVersion) {
+  ver = function(phases, versionFilePath, baseDirFrom, baseDirTo, forceVersion) {
     grunt.verbose.or.writeln('Run with --verbose for details.');
     var renameInfos = [];  // info about renamed files
     var oldToNew = {};
@@ -48,8 +50,8 @@ module.exports = function(grunt) {
         fs.renameSync(f, renamedPath);
         grunt.verbose.write(f + ' ').ok(renamedBasename);
 
-        var renameFrom = path.relative(baseDir, f);
-        var renameTo = path.relative(baseDir, renamedPath);
+        var renameFrom = path.relative(baseDirFrom, f);
+        var renameTo = path.relative(baseDirTo, renamedPath);
 
         oldToNew[renameFrom] = renameTo;
 
@@ -102,7 +104,7 @@ module.exports = function(grunt) {
       output = JSON.parse(fs.readFileSync(versionFilePath));
 
       for (var srcFilename in output) {
-        srcFilename = path.relative(baseDir, output[srcFilename]);
+        srcFilename = path.relative(baseDirFrom, output[srcFilename]);
         if (!fs.existsSync(srcFilename)) {
             delete output[srcFilename];
         }

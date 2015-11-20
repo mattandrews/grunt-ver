@@ -89,12 +89,12 @@ version: {
 }
 ```
 
-### baseDir
+### baseDirTo / baseDirFrom
 
 Type: `String`
 Default: The directory of versionFile
 
-All file paths inside of `versionFile` will be relative to `baseDir`.
+The before/after file paths inside of `versionFile` will be relative to `baseDir`.
 
 
 ## Release History
@@ -105,6 +105,3 @@ All file paths inside of `versionFile` will be relative to `baseDir`.
 ## License
 Copyright (c) 2014 Chris Danford
 Licensed under the MIT license.
-
-
-
